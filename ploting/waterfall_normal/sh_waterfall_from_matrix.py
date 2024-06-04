@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Define the paths
-input_csv_path = '/mnt/4tbssd/anritsu/anritsu/20240516_matrix.csv'
-output_plot_path = '/mnt/4tbssd/plots/anritsu_20240516.png'
+input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh1/2024/20240516_matrix.csv'
+output_plot_path = '/mnt/4tbssd/waterfall_plots/sh1/sh1_20240516.png'
 
 # Read the CSV file
 data = pd.read_csv(input_csv_path, index_col='Frequency (GHz)')
@@ -28,17 +28,17 @@ power_readings = data.values.T
 levels = np.linspace(-110,-20, 25)  # Adjust number of levels as needed
 
 # Create the contour plot
-plt.figure(figsize=(10, 6))
+plt.figure(figsize=(20, 12))
 c = plt.contourf(F, T, power_readings, levels=levels, cmap='cividis')
 
 # Labeling
 plt.xlabel('Frequency (GHz)')
 plt.ylabel('Time since midnight (hours)')
-plt.title('20240516_anritsu')
+plt.title('20240516 SH1-MAPO')
 plt.colorbar(c, label='Power (dBm)')
 
 # Save and optionally display the plot
 plt.tight_layout()
 # Save the plot with high resolution
-plt.savefig(output_plot_path, dpi=50)
-# plt.show()
+plt.savefig(output_plot_path, dpi=100)
+#plt.show()

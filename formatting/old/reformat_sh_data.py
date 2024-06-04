@@ -39,5 +39,5 @@ def process_files(directory, max_workers=5):
                 print(f"{file_path} generated an exception: {exc}")
 
 # Example usage:
-process_files('/mnt/4tbssd/southpole_sh_data/sh2_2024/202403')
+process_files('/mnt/4tbssd/southpole_sh_data/sh1_2024/202403')
 
