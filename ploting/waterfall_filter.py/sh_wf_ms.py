@@ -1,16 +1,14 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
+from scipy.signal import medfilt
 
 # Define the paths
-input_csv_path = '/mnt/4tbssd/anritsu/anritsu/20240516_matrix.csv'
-output_plot_path = '/mnt/4tbssd/plots/anritsu_20240516.png'
+input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh1/2021/20210101_matrix.csv'
+output_plot_path = '/mnt/4tbssd/waterfall_plots/sh1/sh1_20240516.png'
 
 # Read the CSV file
 data = pd.read_csv(input_csv_path, index_col='Frequency (GHz)')
-
-# Filter out frequencies between 1 GHz and 12.4 GHz
-data_filtered = data[(data.index > 1.0) & (data.index <= 12.4)]
 
 # Function to convert timestamps to hours since midnight
 def hours_since_midnight(s):
@@ -20,27 +18,29 @@ def hours_since_midnight(s):
 time_stamps = [hours_since_midnight(ts) for ts in data.columns]
 
 # Create meshgrid for frequencies and times
-F, T = np.meshgrid(data_filtered.index, time_stamps)
+F, T = np.meshgrid(data.index, time_stamps)
 
 # Transpose the data to align with the meshgrid
-power_readings = data_filtered.values.T
+power_readings = data.values.T
+
+# Apply the Wiener filter
+filtered_power_readings = medfilt(power_readings)
 
 # Determine the range of your data for contour levels
-vmin = np.min(power_readings)
-vmax = np.max(power_readings)
+levels = np.linspace(-90, -20, 25)  # Adjust number of levels as needed
 
 # Create the contour plot
 plt.figure(figsize=(20, 12))
-c = plt.contourf(F, T, power_readings, levels=25, cmap='cividis', vmin=vmin, vmax=vmax)
+c = plt.contourf(F, T, filtered_power_readings, levels=levels, cmap='cividis')
 
 # Labeling
 plt.xlabel('Frequency (GHz)')
 plt.ylabel('Time since midnight (hours)')
-plt.title('20240516_anritsu')
+plt.title('20240602 Anritsu-DSL')
 plt.colorbar(c, label='Power (dBm)')
 
 # Save and optionally display the plot
 plt.tight_layout()
-# Save the plot with high resolution
 #plt.savefig(output_plot_path, dpi=100)
 plt.show()
+

@@ -3,8 +3,8 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 # Define the paths
-input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh1/2021/20210101_matrix.csv'
-output_plot_path = '/mnt/4tbssd/plots/large_20210101.png'
+input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh2/2024/20240516_matrix.csv'
+output_plot_path = '/mnt/4tbssd/waterfall_plots/compare_plots/sh2/sh2_20240516.png'
 
 # Read the CSV file
 data = pd.read_csv(input_csv_path, index_col='Frequency (GHz)')
@@ -36,11 +36,11 @@ c = plt.contourf(F, T, power_readings, levels=25, cmap='cividis', vmin=vmin, vma
 # Labeling
 plt.xlabel('Frequency (GHz)')
 plt.ylabel('Time since midnight (hours)')
-plt.title('20240516_anritsu')
+plt.title('20240516 SH2-DSL')
 plt.colorbar(c, label='Power (dBm)')
 
 # Save and optionally display the plot
 plt.tight_layout()
 # Save the plot with high resolution
-#plt.savefig(output_plot_path, dpi=100)
-plt.show()
+plt.savefig(output_plot_path, dpi=100)
+#plt.show()
