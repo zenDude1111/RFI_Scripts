@@ -7,16 +7,12 @@ import numpy as np
 #output_plot_path = '/mnt/4tbssd/waterfall_plots/anritsu/anritsu_20240516.png'
 
 # Path for SignalHound 1
-#input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh1/2021/20210101_matrix.csv'
+#input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh1/2024/20240501_matrix.csv'
 #output_plot_path = '/mnt/4tbssd/waterfall_plots/sh1/sh1_20240516.png'
 
 # Path for SignalHound 2
-#input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh2/2024/20240601_matrix.csv'
+input_csv_path = '/mnt/4tbssd/time_series_matrix_data/sh2/2024/20240501_matrix.csv'
 #output_plot_path = '/mnt/4tbssd/waterfall_plots/sh1/sh1_20240516.png'
-
-# Lab SH paths
-input_csv_path = f"/home/polarbear/Desktop/erics_code/lab_sh_data/20240619/20240619_matrix.csv"
-#output_plot_path = f"/home/polarbear/Desktop/erics_code/lab_sh_data"  # Specify your output directory here
 
 # Read the CSV file
 data = pd.read_csv(input_csv_path, index_col='Frequency (GHz)')
@@ -35,19 +31,11 @@ F, T = np.meshgrid(data.index, time_stamps)
 # Transpose the data to align with the meshgrid
 power_readings = data.values.T
 
-# Calculate the IQR for each frequency (each column)
-Q1 = np.percentile(power_readings, 25, axis=0)
-Q3 = np.percentile(power_readings, 75, axis=0)
-IQR = Q3 - Q1
+# Calculate the median of all power readings
+median_power = np.median(power_readings)
 
-# Define the cutoff as Q3 + 1.5 * IQR
-cutoff = Q3 + 1.75 * IQR
-
-# Anritsu thresholding to set values below the cutoff to -90 dBm
-#filtered_power_readings = np.where(power_readings < cutoff, -90, power_readings)
-
-# Signal Hound thresholding to set values below the cutoff to -110 dBm
-filtered_power_readings = np.where(power_readings < cutoff, -110, power_readings)
+# Set values below the median to -90 dBm
+filtered_power_readings = np.where(power_readings < median_power, -90, power_readings)
 
 # Range for Anritsu
 #levels = np.linspace(-90, -20, 25)  
@@ -57,22 +45,17 @@ levels = np.linspace(-110, -20, 25)
 
 # Create the contour plot
 plt.figure(figsize=(20, 12))
-c = plt.contourf(F, T, filtered_power_readings, levels=levels, cmap='cividis') #for filtered power readings
-#c = plt.contourf(F, T, power_readings, levels=levels, cmap='cividis') #for unfiltered power readings
+c = plt.contourf(F, T, filtered_power_readings, levels=levels, cmap='cividis')
 
 # Labeling
 plt.xlabel('Frequency (GHz)')
 plt.ylabel('Time since midnight (hours)')
-#plt.title('IQR Filter 20240601 Anritsu-DSL') #anritsu title
-#plt.title('IQR Filter 20210101 SH1-MAPO') #sh1 title
-#plt.title('IQR Filter 20240601 SH2-DSL') #sh2 title
-plt.title('IQR Filter 20240619 Lab SH') #sh2 title
-
+plt.title('Median Filter 20240601 Anritsu-DSL') #anritsu title
+#plt.title('Median Filter 20240501 SH1-MAPO') #sh1 title
+#plt.title('Median Filter 20240501 SH2-DSL') #sh2 title
 plt.colorbar(c, label='Power (dBm)')
 
 # Save and optionally display the plot
 plt.tight_layout()
 #plt.savefig(output_plot_path, dpi=100)
 plt.show()
-
-

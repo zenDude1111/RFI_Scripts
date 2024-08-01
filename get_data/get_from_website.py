@@ -6,7 +6,7 @@ from datetime import datetime
 from bs4 import BeautifulSoup
 
 # URL of the website
-URL = "http://bicep.rc.fas.harvard.edu/southpole_info/EMI_WG/keckdaq/signalhound1/"
+URL = "http://bicep.rc.fas.harvard.edu/southpole_info/EMI_WG/keckdaq/signalhound2/"
 
 def download_file(url, path):
     try:
@@ -79,9 +79,9 @@ def download_and_unpack_tar(url, save_directory, start_date_str, end_date_str):
                 print(f"Error in concurrent processing: {e}")
 
 # Example usage
-save_dir = '/media/polarbear/586CF6E16CF6B8B8/sh1_2024'
-start_date_str = '20240430'  # Example start date in YYYYMMDD format
-end_date_str = '20240603'  # Example end date in YYYYMMDD format
+save_dir = '/media/polarbear/586CF6E16CF6B8B81/2024/sh2'
+start_date_str = '20240603'  # Example start date in YYYYMMDD format
+end_date_str = '20240711'  # Example end date in YYYYMMDD format
 download_and_unpack_tar(URL, save_dir, start_date_str, end_date_str)
 
 

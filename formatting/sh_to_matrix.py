@@ -68,7 +68,12 @@ def process_all_days(input_directory, output_directory):
         process_day_directory(day_directory, output_directory)
 
 
-# Example usage
-input_directory = "/media/polarbear/586CF6E16CF6B8B8/sh2_2024"
-output_directory = "/mnt/4tbssd/time_series_matrix_data/sh2/2024"  # Specify your output directory here
+# lab sh
+#input_directory = "/home/polarbear/Desktop/erics_code/lab_sh_data/20240704"
+#output_directory = "/home/polarbear/Desktop/erics_code/lab_sh_data/20240704"  
+
+#South Pole SH
+input_directory = "/media/polarbear/586CF6E16CF6B8B81/sh2_2020"
+output_directory = "/media/polarbear/586CF6E16CF6B8B8/sh2/2020"  
+
 process_all_days(input_directory, output_directory)
